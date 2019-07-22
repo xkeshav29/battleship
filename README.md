@@ -1,4 +1,5 @@
 # battleship
 
-To run
+To run:
+
 mvn spring-boot:run
