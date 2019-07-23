@@ -2,19 +2,26 @@ package com.myapp.model;
 
 public enum ShipType {
 
-    CARRIER(5),
-    BATTLESHIP(4),
-    CRUISER(3),
-    SUBMARINE(3),
-    DESTROYER(2);
+    CARRIER(5, "carrier"),
+    BATTLESHIP(4, "battleship"),
+    CRUISER(3, "cruiser"),
+    SUBMARINE(3, "submarine"),
+    DESTROYER(2, "destroyer");
 
     private int size;
 
-    ShipType(int size) {
+    private String name;
+
+    ShipType(int size, String name) {
         this.size = size;
+        this.name = name;
     }
 
     public int getSize() {
         return size;
+    }
+
+    public String getName() {
+        return name;
     }
 }

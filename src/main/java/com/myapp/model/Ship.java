@@ -13,13 +13,16 @@ public class Ship {
 
     public boolean isValid() {
         //all cells belong to same row or column
-        //all cells are within range of the rows and columns
         return cells.size() == shipType.getSize();
     }
 
     public boolean isDestroyed() {
         return cells.stream()
                 .allMatch(Cell::isAttacked);
+    }
+
+    public ShipType getShipType() {
+        return shipType;
     }
 
     public List<Cell> getCells() {

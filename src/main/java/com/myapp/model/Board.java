@@ -1,5 +1,8 @@
 package com.myapp.model;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.List;
 import java.util.stream.IntStream;
 
@@ -7,6 +10,9 @@ public class Board {
 
     private Cell[][] cells;
     private List<Ship> ships;
+
+    private static Logger LOG = LoggerFactory
+            .getLogger(Board.class);
 
     public Board(Cell[][] cells, List<Ship> ships) {
         this.cells = cells;
@@ -21,6 +27,11 @@ public class Board {
     public boolean attack(Cell cell) {
         Cell target = cells[cell.getX()][cell.getY()];
         target.attack();
+
+        ships.stream()
+                .filter(Ship::isDestroyed)
+        .forEach(ship -> LOG.info("Ship Destroyed: {}", ship.getShipType().getName()));
+
         return ships.stream()
                 .flatMap(ship -> ship.getCells().stream())
                 .anyMatch(c -> c.equals(target));
@@ -37,7 +48,7 @@ public class Board {
     }
 
     public boolean isValid() {
-        //no two ships have same cell
+        //check: no two ships have same cell
         return ships.stream().allMatch(Ship::isValid);
     }
 }
