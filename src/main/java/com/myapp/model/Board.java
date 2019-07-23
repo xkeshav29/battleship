@@ -18,15 +18,12 @@ public class Board {
                 .allMatch(Ship::isDestroyed);
     }
 
-    private boolean isAttacked(Cell cell) {
-        return cells[cell.getX()][cell.getY()].isAttacked();
-    }
-
     public boolean attack(Cell cell) {
-        if(isAttacked(cell))
-            return false;
-        cells[cell.getX()][cell.getY()].attack();
-        return true;
+        Cell target = cells[cell.getX()][cell.getY()];
+        target.attack();
+        return ships.stream()
+                .flatMap(ship -> ship.getCells().stream())
+                .anyMatch(c -> c.equals(target));
     }
 
     public void display() {
@@ -37,5 +34,10 @@ public class Board {
                     IntStream.range(0, cells.length)
                             .forEach(c -> System.out.print(cells[r][c]));
                 });
+    }
+
+    public boolean isValid() {
+        //no two ships have same cell
+        return ships.stream().allMatch(Ship::isValid);
     }
 }

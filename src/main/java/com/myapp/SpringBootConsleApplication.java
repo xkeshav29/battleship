@@ -1,7 +1,10 @@
 package com.myapp;
 
+import com.myapp.factory.CellFactory;
+import com.myapp.factory.ShipFactory;
 import com.myapp.model.Cell;
 import com.myapp.model.Ship;
+import com.myapp.model.ShipType;
 import com.myapp.service.GameService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,18 +42,40 @@ public class SpringBootConsleApplication
         String player1Id = scanner.next();
         LOG.info("Please enter player 2 id: ");
         String player2Id = scanner.next();
+        gameService.startGame(player1Id, player2Id, getPlayer1Ships(), getPlayer2Ships());
+    }
+
+    public List<Ship> getPlayer1Ships() {
         List<Ship> player1Ships = new ArrayList<>();
-        player1Ships.add(new Ship(Arrays.asList(new Cell(0,4), new Cell(0,5), new Cell(0,6))));
-        player1Ships.add(new Ship(Arrays.asList(new Cell(3,3), new Cell(3,3))));
-        player1Ships.add(new Ship(Arrays.asList(new Cell(2,0), new Cell(2,1), new Cell(2,2), new Cell(2, 3), new Cell(2, 4))));
-        player1Ships.add(new Ship(Arrays.asList(new Cell(4,7), new Cell(5,6), new Cell(6,7))));
-        player1Ships.add(new Ship(Arrays.asList(new Cell(5,7), new Cell(6,7), new Cell(7,7), new Cell(8, 7))));
+        player1Ships.add(ShipFactory.createShip(Arrays.asList(newCell(0,4), newCell(0,5),
+                newCell(0,6)), ShipType.SUBMARINE));
+        player1Ships.add(ShipFactory.createShip(Arrays.asList(newCell(3,3), newCell(3,4)),
+                ShipType.DESTROYER));
+        player1Ships.add(ShipFactory.createShip(Arrays.asList(newCell(2,0), newCell(2,1),
+                newCell(2,2), newCell(2, 3), newCell(2, 4)), ShipType.CARRIER));
+        player1Ships.add(ShipFactory.createShip(Arrays.asList(newCell(4,7), newCell(5,6),
+                newCell(6,7)), ShipType.CRUISER));
+        player1Ships.add(ShipFactory.createShip(Arrays.asList(newCell(5,7), newCell(6,7),
+                newCell(7,7), newCell(8, 7)), ShipType.BATTLESHIP));
+        return player1Ships;
+    }
+
+    public List<Ship> getPlayer2Ships() {
         List<Ship> player2Ships = new ArrayList<>();
-        player2Ships.add(new Ship(Arrays.asList(new Cell(0,5), new Cell(0,6))));
-        player2Ships.add(new Ship(Arrays.asList(new Cell(2,0), new Cell(2,1), new Cell(2,2))));
-        player2Ships.add(new Ship(Arrays.asList(new Cell(4,4), new Cell(5,4), new Cell(6,4), new Cell(7, 4), new Cell(8, 4))));
-        player2Ships.add(new Ship(Arrays.asList(new Cell(2,6), new Cell(3,6), new Cell(4,6))));
-        player2Ships.add(new Ship(Arrays.asList(new Cell(5,2), new Cell(6,2), new Cell(7,2), new Cell(8, 2))));
-        gameService.startGame(player1Id, player2Id, player1Ships, player2Ships);
+        player2Ships.add(ShipFactory.createShip(Arrays.asList(newCell(0, 5), newCell(0, 6)),
+                ShipType.DESTROYER));
+        player2Ships.add(ShipFactory.createShip(Arrays.asList(newCell(2, 0), newCell(2, 1),
+                newCell(2, 2)), ShipType.SUBMARINE));
+        player2Ships.add(ShipFactory.createShip(Arrays.asList(newCell(4, 4), newCell(5, 4),
+                newCell(6, 4), newCell(7, 4), newCell(8, 4)), ShipType.CARRIER));
+        player2Ships.add(ShipFactory.createShip(Arrays.asList(newCell(2, 6), newCell(3, 6),
+                newCell(4, 6)), ShipType.CRUISER));
+        player2Ships.add(ShipFactory.createShip(Arrays.asList(newCell(5, 2), newCell(6, 2),
+                newCell(7, 2), newCell(8, 2)), ShipType.BATTLESHIP));
+        return player2Ships;
+    }
+    
+    public Cell newCell(int x, int y) {
+        return CellFactory.newCell(x, y);
     }
 }

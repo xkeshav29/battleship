@@ -13,7 +13,7 @@ public class BoardFactory {
         Cell[][] cells = new Cell[10][10];
         IntStream.range(0, cells.length)
                 .forEach(r -> IntStream.range(0, cells.length)
-                        .forEach(c -> cells[r][c] = new Cell(r, c)));
+                        .forEach(c -> cells[r][c] = CellFactory.newCell(r, c)));
         ships.stream()
                 .flatMap(ship -> ship.getCells().stream())
                 .forEach(cell -> cells[cell.getX()][cell.getY()] = cell);

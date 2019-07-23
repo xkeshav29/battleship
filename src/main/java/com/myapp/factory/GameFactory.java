@@ -1,5 +1,6 @@
 package com.myapp.factory;
 
+import com.myapp.exception.InvalidGameException;
 import com.myapp.model.*;
 
 import java.util.List;
@@ -12,10 +13,13 @@ public class GameFactory {
         Board board2 = BoardFactory.createBoard(player2Ships);
         Player player1 = PlayerFactory.createPlayer(player1Id, board1);
         Player player2 = PlayerFactory.createPlayer(player2Id, board2);
-        return new GameBuilder()
+        Game game = new GameBuilder()
                 .setId(UUID.randomUUID().toString())
                 .setPlayer1(player1)
                 .setPlayer2(player2)
                 .createGame();
+        if(!game.isValid())
+            throw new InvalidGameException("Invalid Setup of ships");
+        return game;
     }
 }

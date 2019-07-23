@@ -1,16 +1,24 @@
 package com.myapp.model;
 
+import com.myapp.exception.TargetAlreadyAttackedException;
+
 import java.util.Objects;
 
 public class Cell {
     private int x;
     private int y;
     private boolean isAttacked;
+    private int boardSize;
 
-    public Cell(int x, int y) {
+    public Cell(int x, int y, int boardSize) {
         this.x = x;
         this.y = y;
+        this.boardSize = boardSize;
         this.isAttacked = false;
+    }
+
+    public boolean isValid (){
+        return (x>=0 && x<boardSize) && (y>=0 && y<boardSize);
     }
 
     public int getX() {
@@ -26,6 +34,8 @@ public class Cell {
     }
 
     public void attack() {
+        if(this.isAttacked)
+            throw new TargetAlreadyAttackedException(String.format("%s %s already attacked", x, y));
         isAttacked = true;
     }
 
